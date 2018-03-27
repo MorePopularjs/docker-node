@@ -18,12 +18,12 @@ app.use(bodyparser({
 app.use(json())
 app.use(logger())
 app.use(async (ctx, next) => {
-//   for ( var i = 0; i < 100000000; i++ ) {
-//     var user       = {};
-//     user.name  = 'outmem';
-//     user.pass  = '123456';
-//     user.email = 'outmem[@outmem](/user/outmem).com';
-// }
+  //   for ( var i = 0; i < 100000000; i++ ) {
+  //     var user       = {};
+  //     user.name  = 'outmem';
+  //     user.pass  = '123456';
+  //     user.email = 'outmem[@outmem](/user/outmem).com';
+  // }
   // window.handler = window.setInterval(function () {
   //   if (typeof AMap) {
   //     _this.renderMap('', AMap);
@@ -44,8 +44,24 @@ app.use(async (ctx, next) => {
   // ctx.set('expires', new Date('2018/2/12 12:12:12 GMT'));
   await next();
 })
-app.use(require('koa-static')(__dirname + '/public'))
-
+// app.use(require('koa-static')(__dirname + '/public'))
+app.use('/css/:cssName', (req, res) => {
+  let fileName = req.params.cssName;
+  console.log(fileName);
+  setTimeout(() => {
+    res.sendFile(fileName, {
+      root: path.join(__dirname, '/public/stylesheets')
+    });
+  }, 4000);
+});
+app.use('/js/:jsName', (req, res) => {
+  let fileName = req.params.jsName;
+  setTimeout(() => {
+    res.sendFile(fileName, {
+      root: path.join(__dirname, 'public/javascripts')
+    });
+  }, 2000);
+})
 app.use(views(__dirname + '/views', {
   extension: 'pug'
 }))
